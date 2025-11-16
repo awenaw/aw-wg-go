@@ -21,3 +21,12 @@ cd 01-protocol-overview
 go run .
 ```
 输出日志即为 `main.go` 中的 NoiseIK 握手/传输示例 Transcript，可用于对照 README 的流程描述。
+
+## 入门者可以学到什么
+- **协议角色的心智模型**：`main.go` 通过 `Peer` 结构体展示 Initiator/Responder 的最小关键信息（名字、公钥），帮助理解 WireGuard 只有静态密钥、没有传统证书体系的设计。
+- **三类核心消息**：`HandshakeInitiation`、`HandshakeResponse`、`TransportData` 会在输出中以 `Sender -> Receiver | Kind | fields` 形式呈现，方便对照官方白皮书中的字段。
+- **NoiseIK 的 CK/SK 演化**：`keyDerivations` 日志按顺序列出 CK0 ~ CK3 与 SKi/SKr 的推导，让初学者能快速掌握“MixHash / MixKey / KDF2”在握手中的作用。
+- **代码模块划分**：`Simulation` 结构用脚本化的方式串联握手步骤，和 wireguard-go 里 `device/noise-handshake.go` 的状态机一一对应，便于后续跳到真实源码查阅。
+- **运行→观察→推导的闭环**：通过 `go run .` 即可看到全流程输出，先理解高层概念，再去源码中寻找实现细节（如 peer 管理、定时器、UDP 协程）。
+
+> 建议：先阅读本 README 的“原理简介”，运行示例观察日志，再转向 `main.go` 注释或官方文档深入理解。必要时可把输出与抓包工具（Wireshark/wg CLI）的结果对比，加深对消息格式与计数器的认识。
