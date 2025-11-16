@@ -27,6 +27,7 @@ type Simulation struct {
 	keyDerivations []string
 }
 
+// aw-newSimulation 创建两个 peer；你只要知道 Initiator/Responder 已经准备好了。
 func newSimulation() *Simulation {
 	return &Simulation{
 		Initiator: Peer{Name: "Initiator", PublicKey: "init-pub-AAAAAAAAAAAAAAAAAAAA"},
